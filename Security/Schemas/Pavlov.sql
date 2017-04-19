@@ -1,0 +1,3 @@
+CREATE SCHEMA [Pavlov]
+AUTHORIZATION [dbo]
+GO

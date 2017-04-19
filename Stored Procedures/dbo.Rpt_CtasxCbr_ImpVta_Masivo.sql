@@ -1,0 +1,45 @@
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_NULLS ON
+GO
+CREATE procedure [dbo].[Rpt_CtasxCbr_ImpVta_Masivo]
+@RucE nvarchar(11),
+@Ejer varchar(4),
+@FechaIni date,
+@FechaFin date,
+@Cd_Clt char(10)
+as
+
+declare @Cd_Vta varchar(max)
+declare @consultas varchar(max)
+select
+	@Cd_Vta = COALESCE(@Cd_Vta + ','''+v.Cd_Vta+'''',''''+Cd_Vta+'''')
+from 
+	venta v 
+	inner join voucher vou on vou.RucE=v.RucE and vou.Ejer=v.Eje and vou.RegCtb=v.RegCtb
+where
+	vou.RucE=@RucE
+	and vou.Ejer=@Ejer
+	and Convert(varchar,vou.FecMov,103) between Convert(varchar,@FechaIni,103) and Convert(varchar,@FechaFin,103)
+	and vou.Cd_Clt=@Cd_Clt
+group by vou.RegCtb,v.Cd_Vta
+
+set @Consultas='
+declare @Cd_Vta varchar(max)
+
+select
+	@Cd_Vta = COALESCE(@Cd_Vta + '',''''''+v.Cd_Vta+'''''''',''''''''+Cd_Vta+'''''''')
+from 
+	venta v 
+	inner join voucher vou on vou.RucE=v.RucE and vou.Ejer=v.Eje and vou.RegCtb=v.RegCtb
+where
+	vou.RucE='''+@RucE+'''
+	and vou.Ejer='''+@Ejer+'''
+	and Convert(varchar,vou.FecMov,103) between Convert(varchar,'''+Convert(Varchar,@FechaIni)+''',103) and Convert(varchar,'''+Convert(varchar,@FechaFin)+''',103)
+	and vou.Cd_Clt='''+@Cd_Clt+'''
+group by vou.RegCtb,v.Cd_Vta'
+print @Consultas
+select @Cd_Vta as CodtoPrint
+--'VT00000564','VT00000567','VT00000566','VT00000568','VT00000570','VT00000573','VT00000574','VT00000575','VT00000576','VT00000577','VT00000578','VT00000579','VT00000580','VT00000581','VT00000586','VT00000590','VT00000591','VT00000592','VT00000595','VT00000596','VT00000597','VT00000598','VT00000599','VT00000600','VT00000601','VT00000602','VT00000603','VT00000604','VT00000605','VT00000606','VT00000607','VT00000608','VT00000609','VT00000610','VT00000611','VT00000613','VT00000614','VT00000615','VT00000616','VT00000617','VT00000619','VT00000620','VT00000621','VT00000622','VT00000624','VT00000625','VT00000626','VT00000627','VT00000628','VT00000633','VT00000632','VT00000634','VT00000635','VT00000637','VT00000638','VT00000639','VT00000640','VT00000641','VT00000650','VT00000657','VT00000659','VT00000660','VT00000661','VT00000662','VT00000663','VT00000668','VT00000670','VT00000671','VT00000673','VT00000676','VT00000677','VT00000679','VT00000680','VT00000682','VT00000683','VT00000684','VT00000695','VT00000691','VT00000693','VT00000694','VT00000696','VT00000697','VT00000698','VT00000699','VT00000700','VT00000701','VT00000702','VT00000703','VT00000704','VT00000706','VT00000707','VT00000708','VT00000709','VT00000710','VT00000712','VT00000713','VT00000714','VT00000715','VT00000716','VT00000719','VT00000722','VT00000723','VT00000724','VT00000728','VT00000729','VT00000736','VT00000757','VT00000793','VT00000794','VT00000795','VT00000796','VT00000809','VT00000810','VT00000813','VT00000815','VT00000816','VT00000817','VT00000823','VT00000824','VT00000827','VT00000829','VT00000830','VT00000831','VT00000833','VT00000807'
+--exec [dbo].[Rpt_CtasxCbr_ImpVta_Masivo] '11111111111','2011','01/12/2011','31/12/2011','CLT0000291'
+GO

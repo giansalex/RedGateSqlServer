@@ -1,0 +1,31 @@
+CREATE TABLE [dbo].[CanjePagoDetRM]
+(
+[RucE] [nvarchar] (11) COLLATE Modern_Spanish_CI_AS NOT NULL,
+[Ejer] [nvarchar] (4) COLLATE Modern_Spanish_CI_AS NULL,
+[Cd_Cnj] [char] (10) COLLATE Modern_Spanish_CI_AS NOT NULL,
+[RegCtb] [nvarchar] (15) COLLATE Modern_Spanish_CI_AS NULL,
+[Prdo] [nvarchar] (2) COLLATE Modern_Spanish_CI_AS NULL,
+[FecMov] [smalldatetime] NULL,
+[Cd_Prv] [char] (7) COLLATE Modern_Spanish_CI_AS NULL,
+[Cd_Mda] [nvarchar] (2) COLLATE Modern_Spanish_CI_AS NULL,
+[TipCam] [numeric] (13, 2) NULL,
+[CantLtr] [int] NULL,
+[OtrosImp] [numeric] (13, 2) NULL,
+[Total] [numeric] (13, 2) NULL,
+[Obs] [varchar] (200) COLLATE Modern_Spanish_CI_AS NULL,
+[IB_Anulado] [bit] NULL,
+[FecReg] [datetime] NULL,
+[Cd_Com] [nvarchar] (10) COLLATE Modern_Spanish_CI_AS NULL,
+[Cd_Vou] [int] NULL,
+[Cd_Ltr] [int] NULL,
+[Cd_TD] [nvarchar] (2) COLLATE Modern_Spanish_CI_AS NULL,
+[NroSre] [varchar] (5) COLLATE Modern_Spanish_CI_AS NULL,
+[NroDoc] [nvarchar] (15) COLLATE Modern_Spanish_CI_AS NULL,
+[Importe] [numeric] (13, 2) NULL,
+[DsctPor] [numeric] (5, 2) NULL,
+[DsctImp] [numeric] (13, 2) NULL,
+[TotalDoc] [numeric] (13, 2) NULL,
+[Cd_Est] [nvarchar] (2) COLLATE Modern_Spanish_CI_AS NULL,
+[NomUsu] [nvarchar] (10) COLLATE Modern_Spanish_CI_AS NULL
+) ON [PRIMARY]
+GO

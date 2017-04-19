@@ -1,0 +1,53 @@
+CREATE TABLE [dbo].[SolicitudReq2]
+(
+[RucE] [nvarchar] (11) COLLATE Modern_Spanish_CI_AS NOT NULL,
+[Cd_SR] [char] (10) COLLATE Modern_Spanish_CI_AS NOT NULL,
+[NroSR] [varchar] (15) COLLATE Modern_Spanish_CI_AS NOT NULL,
+[FecEmi] [smalldatetime] NOT NULL,
+[FecEnt] [smalldatetime] NULL,
+[Asunto] [varchar] (200) COLLATE Modern_Spanish_CI_AS NULL,
+[Cd_Area] [nvarchar] (6) COLLATE Modern_Spanish_CI_AS NOT NULL,
+[Obs] [varchar] (4000) COLLATE Modern_Spanish_CI_AS NULL,
+[ElaboradoPor] [varchar] (100) COLLATE Modern_Spanish_CI_AS NULL,
+[FecCrea] [datetime] NOT NULL,
+[FecMdf] [datetime] NULL,
+[UsuCrea] [nvarchar] (10) COLLATE Modern_Spanish_CI_AS NOT NULL,
+[UsuMdf] [nvarchar] (10) COLLATE Modern_Spanish_CI_AS NULL,
+[Cd_CC] [nvarchar] (8) COLLATE Modern_Spanish_CI_AS NULL,
+[Cd_SC] [nvarchar] (8) COLLATE Modern_Spanish_CI_AS NULL,
+[Cd_SS] [nvarchar] (8) COLLATE Modern_Spanish_CI_AS NULL,
+[TipAut] [int] NULL,
+[IB_EsAut] [bit] NULL,
+[IB_Anulado] [bit] NULL,
+[IB_Eliminado] [bit] NULL,
+[CA01] [varchar] (100) COLLATE Modern_Spanish_CI_AS NULL,
+[CA02] [varchar] (100) COLLATE Modern_Spanish_CI_AS NULL,
+[CA03] [varchar] (100) COLLATE Modern_Spanish_CI_AS NULL,
+[CA04] [varchar] (100) COLLATE Modern_Spanish_CI_AS NULL,
+[CA05] [varchar] (100) COLLATE Modern_Spanish_CI_AS NULL,
+[CA06] [varchar] (100) COLLATE Modern_Spanish_CI_AS NULL,
+[CA07] [varchar] (100) COLLATE Modern_Spanish_CI_AS NULL,
+[CA08] [varchar] (100) COLLATE Modern_Spanish_CI_AS NULL,
+[CA09] [varchar] (100) COLLATE Modern_Spanish_CI_AS NULL,
+[CA10] [varchar] (100) COLLATE Modern_Spanish_CI_AS NULL,
+[CA11] [varchar] (500) COLLATE Modern_Spanish_CI_AS NULL,
+[CA12] [varchar] (500) COLLATE Modern_Spanish_CI_AS NULL,
+[CA13] [varchar] (500) COLLATE Modern_Spanish_CI_AS NULL,
+[CA14] [varchar] (500) COLLATE Modern_Spanish_CI_AS NULL,
+[CA15] [varchar] (500) COLLATE Modern_Spanish_CI_AS NULL,
+[CA16] [varchar] (1000) COLLATE Modern_Spanish_CI_AS NULL,
+[CA17] [varchar] (1000) COLLATE Modern_Spanish_CI_AS NULL,
+[CA18] [varchar] (1000) COLLATE Modern_Spanish_CI_AS NULL,
+[CA19] [varchar] (1000) COLLATE Modern_Spanish_CI_AS NULL,
+[CA20] [varchar] (1000) COLLATE Modern_Spanish_CI_AS NULL,
+[CA21] [varchar] (4000) COLLATE Modern_Spanish_CI_AS NULL,
+[CA22] [varchar] (4000) COLLATE Modern_Spanish_CI_AS NULL,
+[CA23] [varchar] (4000) COLLATE Modern_Spanish_CI_AS NULL,
+[CA24] [varchar] (4000) COLLATE Modern_Spanish_CI_AS NULL,
+[CA25] [varchar] (4000) COLLATE Modern_Spanish_CI_AS NULL
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[SolicitudReq2] ADD CONSTRAINT [PK_SolicitudReq2] PRIMARY KEY CLUSTERED  ([RucE], [Cd_SR]) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[SolicitudReq2] ADD CONSTRAINT [FK_SolicitudReq2_Area] FOREIGN KEY ([RucE], [Cd_Area]) REFERENCES [dbo].[Area] ([RucE], [Cd_Area])
+GO

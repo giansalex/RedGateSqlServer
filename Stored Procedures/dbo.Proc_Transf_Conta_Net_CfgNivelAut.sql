@@ -1,0 +1,17 @@
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_NULLS ON
+GO
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE procedure [dbo].[Proc_Transf_Conta_Net_CfgNivelAut]
+@RucE nvarchar(11)
+as
+declare @consulta nvarchar(1000)
+set @consulta = 'insert into CfgNivelAut 
+	select * from OPENROWSET(''SQLOLEDB'',''ContaServer'';''User321'';''nomeacuerdo'',
+		 ''select * from dbo.CfgNivelAut 
+where id_Aut in(select id_Aut from CfgAutorizacion where RucE='''''+@RucE+''''')'')'
+exec (@consulta)
+--PP/FL : 10/05/2011 <creacion de sp>
+
+GO

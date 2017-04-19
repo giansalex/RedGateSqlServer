@@ -1,0 +1,59 @@
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_NULLS ON
+GO
+CREATE procedure [dbo].[Com_Proveedor2Crea]
+@RucE nvarchar(11),
+@Cd_Prv char(7) output,
+@Cd_TDI nvarchar(2),
+@NDoc nvarchar(15),
+@RSocial varchar(50),
+@ApPat varchar(20),
+@ApMat varchar(20),
+@Nom varchar(20),
+@Cd_Pais nvarchar(4),
+@CodPost varchar(10),
+@Ubigeo nvarchar(6),
+@Direc varchar(100),
+@Telf1 nvarchar(15),
+@Telf2 nvarchar(15),
+@Fax nvarchar(15),
+@Correo varchar(50),
+@PWeb varchar(100),
+@Obs varchar(200),
+@CtaCtb nvarchar(10),
+--@Estado bit,
+@CA01 varchar(100),
+@CA02 varchar(100),
+@CA03 varchar(100),
+@CA04 varchar(100),
+@CA05 varchar(100),
+@CA06 varchar(100),
+@CA07 varchar(100),
+@CA08 varchar(100),
+@CA09 varchar(300),
+@CA10 varchar(300),
+
+@msj varchar(100) output
+as
+if exists (select * from Proveedor2 where RucE=@RucE and NDoc=@NDoc)
+	set @msj = 'Ya existe Proveedor con el mismo numero de documento'
+else
+	begin
+		set @Cd_Prv = dbo.Cod_Prv2(@RucE)
+		insert into Proveedor2(RucE,Cd_Prv,Cd_TDI,NDoc,RSocial,ApPat,ApMat,Nom,Cd_Pais,CodPost,Ubigeo,Direc,Telf1,Telf2,Fax,Correo,PWeb,Obs,CtaCtb,Estado,CA01,CA02,CA03,CA04,CA05,CA06,CA07,CA08,CA09,CA10)
+		       values(@RucE, @Cd_Prv,@Cd_TDI,@NDoc,@RSocial,@ApPat,@ApMat,@Nom,@Cd_Pais,@CodPost,@Ubigeo,@Direc,@Telf1,@Telf2,@Fax,@Correo,@PWeb,@Obs,@CtaCtb,1,@CA01,@CA02,@CA03,@CA04,@CA05,@CA06,@CA07,@CA08,@CA09,@CA10)
+		if @@rowcount <= 0		   set @msj = 'Proveedor no pudo ser registrado'
+	end
+
+print @msj
+
+-- Leyenda --
+-- PP : 2010-02-18 : <Creacion del procedimiento almacenado>
+-- JJ : 2011-02-09 : <Modificacion del procedimiento almacenado>
+
+
+
+
+
+GO

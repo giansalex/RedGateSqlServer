@@ -1,0 +1,107 @@
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_NULLS ON
+GO
+--declare 
+CREATE procedure [dbo].[Rpt_VentasGrupoReymosa]
+@RucE nvarchar(11),
+@Ejer nvarchar(4),
+@Cd_Vdr nvarchar(10),
+@Cd_Clt nvarchar(10),
+@FecIni datetime,
+@FecFin datetime,
+@Ib_Incluir bit,
+@Cd_Mda nvarchar(10)
+
+as
+
+--set @RucE = '11111111111'
+--set @Ejer = '2012'
+--set @Cd_Vdr = ''
+--set @Cd_Clt = ''
+--set @FecIni = '01/09/2012'
+--set @FecFin = '30/09/2012'
+--set @Ib_Incluir = 1
+--set @Cd_Mda = '03'
+
+
+select e.*,'DEL '+Convert(nvarchar,@FecIni,103)+ ' AL '+Convert(nvarchar,@FecFin,103) as FecCons from empresa e where e.Ruc=@RucE
+
+Select 
+/**Venta**/
+v.RucE,
+v.Eje,
+v.Cd_Vta,
+v.FecMov,
+v.Cd_Td,
+v.NroSre,
+v.NroDoc,
+v.FecCbr as FecCbr,
+v.FecReg as FecReg,
+v.Obs,
+v.Prdo,
+
+/**GuiaxVenta**/
+gv.Cd_GR,
+g.NroSre as NroSreGR,
+g.NroGR,
+/**VentaDet**/
+vd.CU,
+isnull(vd.Cd_Prod,isnull(vd.Cd_Srv,'')) as Cd_PrdSrv
+,case when isnull(v.IB_Anulado,0)=1 then 0.0 else case when isnull(vd.IGV,0) = 0 then case when @Cd_Mda = v.Cd_Mda then isnull(vd.IMP,0.00) else case when @Cd_Mda = '01' then isnull(v.CamMda,0.00)*isnull(vd.IMP,0.00) else isnull(vd.IMP,0.00)/isnull(v.CamMda,0.00)end end else 0.00 end end as INF_Det
+,case when isnull(v.IB_Anulado,0)=1 then 0.0 else case when @Cd_Mda = v.Cd_Mda then isnull(vd.Valor,0.00) else case when @Cd_Mda = '01' then isnull(v.CamMda,0.00)*isnull(vd.Valor,0.00) else isnull(vd.Valor,0.00)/isnull(v.CamMda,0.00)end end end as Valor_Det
+,case when isnull(v.IB_Anulado,0)=1 then 0.0 else case when @Cd_Mda = v.Cd_Mda then isnull(vd.DsctoI,0.00) else case when @Cd_Mda = '01' then isnull(v.CamMda,0.00)*isnull(vd.DsctoI,0.00) else isnull(vd.DsctoI,0.00)/isnull(v.CamMda,0.00)end end end as DsctoI_Det
+,case when isnull(v.IB_Anulado,0)=1 then 0.0 else case when isnull(vd.IGV,0) <> 0 then case when @Cd_Mda = v.Cd_Mda then isnull(vd.IMP,0.00) else case when @Cd_Mda = '01' then isnull(v.CamMda,0.00)*isnull(vd.IMP,0.00) else isnull(vd.IMP,0.00)/isnull(v.CamMda,0.00)end end else 0.00 end end as BIM_Det
+,case when isnull(v.IB_Anulado,0)=1 then 0.0 else case when @Cd_Mda = v.Cd_Mda then isnull(vd.IGV,0.00) else case when @Cd_Mda = '01' then isnull(v.CamMda,0.00)*isnull(vd.IGV,0.00) else isnull(vd.IGV,0.00)/isnull(v.CamMda,0.00)end end end as IGV_Det
+,case when isnull(v.IB_Anulado,0)=1 then 0.0 else case when @Cd_Mda = v.Cd_Mda then isnull(vd.Total,0.00) else case when @Cd_Mda = '01' then isnull(v.CamMda,0.00)*isnull(vd.Total,0.00) else isnull(vd.Total,0.00)/isnull(v.CamMda,0.00)end end end as Total_Det
+
+,case when isnull(vd.Cd_Prod,'')<>'' then p.Nombre1 when isnull(vd.Cd_Srv,'')<>'' then s.Nombre end as NomPrdSrv
+,case when isnull(vd.Cd_Prod,'')<>'' then p.CodCo1_ when isnull(vd.Cd_Srv,'')<>'' then s.CodCo end as CodCoPrdSrv
+,case when isnull(vd.Cd_Prod,'')<>'' then p.Descrip when isnull(vd.Cd_Srv,'')<>'' then s.Descrip end as DescripPrdSrv
+,isnull(vdr.NDoc,'') as Cd_Vdr
+,case when isnull(v.Cd_Vdr,'') <> '' then isnull(vdr.RSocial,isnull(vdr.ApPat,'')+' '+isnull(vdr.ApMat,'')+' '+isnull(vdr.Nom,'')) end as Vendedor
+,isnull(v.Cd_Clt,'') as Cd_Clt
+,case when isnull(v.Cd_Clt,'') <> '' then isnull(clt.RSocial,isnull(clt.ApPat,'')+' '+isnull(clt.ApMat,'')+' '+isnull(clt.Nom,'')) end +case when isnull(v.IB_Anulado,0)=1 then ' (ANULADO)' else '' end as Cliente
+,vd.Cant,v.Cd_Mda,v.CamMda
+--,case when @Cd_Mda = '01' then isnull(v.CamMda,0.00)*isnull(vd.IGV,0.00) else isnull(vd.IGV,0.00)/isnull(v.CamMda,0.00)end  as IGV_Dolares
+,case when isnull(v.IB_Anulado,0)=1 then 0.0 else case when  v.Cd_Mda = '01' then  isnull(vd.Total,0.00)*isnull(v.CamMda,0.00) else isnull(vd.Total,0.00) end end as Total_MN
+
+--,case when @Cd_Mda = '01' then isnull(v.CamMda,0.00)*isnull(vd.IGV,0.00) else isnull(vd.IGV,0.00)/isnull(v.CamMda,0.00)end  as IGV_Soles
+,case when isnull(v.IB_Anulado,0)=1 then 0.0 else case when  v.Cd_Mda = '02' then isnull(vd.Total,0.00)/isnull(v.CamMda,0.00) else isnull(vd.Total,0.00) end end as Total_ME,
+v.CA01,v.CA02,v.CA03,v.CA04,v.CA05
+,um.Nombre as NomUM
+,um.NCorto as NCortoUM
+,vdr.CA01 as CA01VDR
+,vdr.CA02 as CA02VDR
+,vdr.CA03 as CA03VDR
+,vdr.CA04 as CA04VDR
+,vdr.CA05 as CA05VDR
+,vdr.CA06 as CA06VDR
+,vdr.CA07 as CA07VDR
+,vdr.CA08 as CA08VDR
+,vdr.CA09 as CA09VDR
+,vdr.CA10 as CA10VDR
+
+from Venta v
+left join GuiaxVenta gv on gv.RucE = v.RucE and gv.Cd_Vta = v.Cd_Vta
+left join GuiaRemision g on g.RucE = v.RucE and g.Cd_GR = gv.Cd_GR
+inner join VentaDet vd on vd.RucE = v.RucE and vd.Cd_Vta = v.Cd_Vta
+left join Producto2 p on p.RucE = v.RucE and p.Cd_Prod = vd.Cd_Prod
+left join Servicio2 s on s.RucE = v.RucE and s.Cd_Srv = vd.Cd_Srv
+left join Vendedor2 vdr on vdr.RucE = v.RucE and vdr.Cd_Vdr = v.Cd_Vdr
+left join Cliente2 clt on clt.RucE = v.RucE and clt.Cd_Clt = v.Cd_Clt 
+left join Prod_UM pum on pum.RucE = v.RucE and pum.Cd_Prod = vd.Cd_Prod and pum.ID_UMP = vd.ID_UMP
+left join UnidadMedida um on um.Cd_UM = pum.Cd_UM
+where 
+v.RucE = @RucE and v.Eje = @Ejer and v.FecMov between @FecIni and @FecFin
+AND isnull(vd.Cd_Srv,'') = ''
+--and isnull(v.IB_Anulado,0)<>1
+and isnull(case when @Ib_Incluir = 1 then '' else v.Cd_Mda end,'') = isnull(case when @Ib_Incluir = 1 then '' else @Cd_Mda end,'')
+--and v.Cd_Vta = 'VT00001202'
+and case when isnull(@Cd_Vdr,'') <> '' then isnull(v.Cd_Vdr,'') else '' end = isnull(@Cd_Vdr,'') 
+and case when isnull(@Cd_Clt,'') <> '' then isnull(v.Cd_Clt,'') else '' end = isnull(@Cd_Clt,'') 
+order by v.FecMov,v.NroSre+v.NroDoc
+--<Creado: Javier> <09/10/2012>
+--Prueba Rpt_VentasGrupoReymosa '20102028687','2012','','','01/09/2012','30/09/2012',0,'02'
+
+GO

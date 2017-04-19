@@ -1,0 +1,2 @@
+CREATE USER [usubkp] WITHOUT LOGIN
+GO

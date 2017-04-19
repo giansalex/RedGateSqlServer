@@ -1,0 +1,2 @@
+CREATE USER [UsuPlanilla] WITHOUT LOGIN
+GO
