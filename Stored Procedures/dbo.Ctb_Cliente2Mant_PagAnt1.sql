@@ -90,7 +90,8 @@ as
 		vnd.Snt_LstCompsElec,
 		vnd.Snt_FecInsPLE,
 		vnd.Snt_NroTrab,
-		vnd.Snt_LstRprsLegs
+		vnd.Snt_LstRprsLegs,
+		vnd.Telf_Busc
 	from '+@Inter+'
 	where '+@Cond+'
 	order by Cd_Clt desc) as Cliente2 order by Cd_Clt'
@@ -113,6 +114,8 @@ exec dbo.Ctb_Cliente2Mant_PagAnt '11111111111',0,90000,'CLT0000080','','CLT00000
 
 Autor : MP -> Modificado 04-10-2010 -> PAGINACION
 LA : 14/11/2011  modificacion 		vnd.UsuCrea, vnd.UsuMdf, vnd.FecReg, vnd.FecMdf 
+
+GS - 20/04/207 -- RETORNA TELEFONOS Buscados
 */
 
 

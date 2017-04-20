@@ -62,7 +62,8 @@ CREATE TABLE [dbo].[Cliente2]
 [Snt_LstCompsElec] [varchar] (300) COLLATE Modern_Spanish_CI_AS NULL,
 [Snt_FecInsPLE] [smalldatetime] NULL,
 [Snt_NroTrab] [int] NULL,
-[Snt_LstRprsLegs] [varchar] (2000) COLLATE Modern_Spanish_CI_AS NULL
+[Snt_LstRprsLegs] [varchar] (2000) COLLATE Modern_Spanish_CI_AS NULL,
+[Telf_Busc] [varchar] (500) COLLATE Modern_Spanish_CI_AS NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[Cliente2] ADD CONSTRAINT [PK_Cliente2] PRIMARY KEY CLUSTERED  ([RucE], [Cd_Clt]) ON [PRIMARY]
@@ -124,4 +125,6 @@ GO
 EXEC sp_addextendedproperty N'MS_Description', N'Sistema de Emision de Comprobante', 'SCHEMA', N'dbo', 'TABLE', N'Cliente2', 'COLUMN', N'Snt_SisEmiComp'
 GO
 EXEC sp_addextendedproperty N'MS_Description', N'Tipo Contribuyente', 'SCHEMA', N'dbo', 'TABLE', N'Cliente2', 'COLUMN', N'Snt_TipCntrb'
+GO
+EXEC sp_addextendedproperty N'MS_Description', N'Telefonos buscados', 'SCHEMA', N'dbo', 'TABLE', N'Cliente2', 'COLUMN', N'Telf_Busc'
 GO

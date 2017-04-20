@@ -92,7 +92,8 @@ as
 		vnd.Snt_LstCompsElec,
 		vnd.Snt_FecInsPLE,
 		vnd.Snt_NroTrab,
-		vnd.Snt_LstRprsLegs
+		vnd.Snt_LstRprsLegs,
+		vnd.Telf_Busc
 	from '+@Inter+'
 	where '+@Cond+'
 	order by vnd.RucE, Cd_Clt'
