@@ -4,7 +4,7 @@ SET ANSI_NULLS ON
 GO
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-CREATE procedure [dbo].[Vta_Cliente2Crea9]
+CREATE procedure [dbo].[Vta_Cliente2Crea10]
 @RucE	nvarchar(11),
 @Cd_Clt	char(10) output,
 @Cd_TDI	nvarchar(2),
@@ -79,6 +79,7 @@ CREATE procedure [dbo].[Vta_Cliente2Crea9]
 @snt_LstCompsElec varchar(300),
 @snt_FecInsPLE smalldatetime, --deberia ser smalldatetime
 @snt_NroTrab int,
+@snt_NroPresSrv int,
 @snt_LstRprsLegs varchar(2000),
 @TelfBusc varchar(2000),
 @msj varchar(100) output
@@ -98,12 +99,12 @@ declare @Cd_Vdr char(10)
 			     Obs,CtaCtb,DiasCbr,PerCbr,CtaCte,Cd_CGC,Estado,CA01,CA02,CA03,CA04,CA05,CA06,CA07,CA08,CA09,CA10,Cd_TClt,FecReg,
 				 UsuCrea, NComercial,IB_AgRet,IB_AgPercep,IB_BuenContrib,Cd_Vdr,snt_TipCntrb,snt_FecInscrip,snt_FecIniAct,snt_FecBaja,
 				 snt_EstCntrb,snt_CondCntrb,snt_SisEmiComp,snt_SisContab,snt_LstActsEcono,snt_LstCompsPago,snt_LstSisEmiElec,snt_FecEmiElec,
-				 snt_LstCompsElec,snt_NroTrab,snt_LstRprsLegs,snt_ActComExt,Snt_FecInsPLE,Telf_Busc)
+				 snt_LstCompsElec,snt_NroTrab,snt_LstRprsLegs,snt_ActComExt,Snt_FecInsPLE,Telf_Busc, Snt_NroPresSrv)
 		     values(@RucE,@Cd_Clt,@Cd_TDI,@NDoc,@RSocial,@ApPat,@ApMat,@Nom,@Cd_Pais,@CodPost,@Ubigeo,@Direc,@Telf1,@Telf2,@Fax,@Correo,@PWeb,
 			    @Obs,@CtaCtb,@DiasCbr,@PerCbr,@CtaCte,@Cd_CGC,@Estado,@CA01,@CA02,@CA03,@CA04,@CA05,@CA06,@CA07,@CA08,@CA09,@CA10,@Cd_TClt,getdate(),
 				@UsuCrea, @NComercial,@IB_AgRet,@IB_AgPercep,@IB_BuenContrib,@Cd_Vdr,@snt_TipCntrb,@snt_FecInscrip,@snt_FecIniAct,@snt_FecBaja,
 				@snt_EstCntrb,@snt_CondCntrb,@snt_SisEmiComp,@snt_SisContab,@snt_LstActsEcono,@snt_LstCompsPago,@snt_LstSisEmiElec,@snt_FecEmiElec,
-				@snt_LstCompsElec,@snt_NroTrab,@snt_LstRprsLegs,@snt_ActComExt,@snt_FecInsPLE, @TelfBusc)
+				@snt_LstCompsElec,@snt_NroTrab,@snt_LstRprsLegs,@snt_ActComExt,@snt_FecInsPLE, @TelfBusc, @snt_NroPresSrv)
 
 
 	if @@rowcount <= 0
@@ -131,4 +132,5 @@ print @msj
 --				IB_BuenContrib
 -- 04/02/2013 : Se amplio @Direc a varchar(200)
 -- GS: 20/04/2017 : Se agrego @TelfBusc
+-- GS: 22/04/2017 : Se agrego @snt_NroPresSrv
 GO

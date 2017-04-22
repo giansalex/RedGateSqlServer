@@ -2,7 +2,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
-CREATE procedure [dbo].[Vta_Cliente2Mdf7]
+CREATE procedure [dbo].[Vta_Cliente2Mdf8]
 @RucE	nvarchar(11),
 @Cd_Clt	char(10),
 @Cd_TDI	nvarchar(2),
@@ -71,6 +71,7 @@ CREATE procedure [dbo].[Vta_Cliente2Mdf7]
 @snt_LstCompsElec varchar(300),
 @snt_FecInsPLE smalldatetime, --deberia ser smalldatetime
 @snt_NroTrab int,
+@snt_NroPresSrv int,
 @snt_LstRprsLegs varchar(2000),
 @TelfBusc varchar(2000),
 @msj varchar(100) output
@@ -93,7 +94,7 @@ begin transaction
 				snt_TipCntrb=@snt_TipCntrb,snt_FecInscrip=@snt_FecInscrip,snt_FecIniAct=@snt_FecIniAct,snt_FecBaja=@snt_FecBaja,
 				snt_EstCntrb=@snt_EstCntrb,snt_CondCntrb=@snt_CondCntrb,snt_SisEmiComp=@snt_SisEmiComp,snt_SisContab=@snt_SisContab,snt_LstActsEcono=@snt_LstActsEcono,snt_LstCompsPago=@snt_LstCompsPago,
 				snt_LstSisEmiElec=@snt_LstSisEmiElec,snt_FecEmiElec=@snt_FecEmiElec,
-				snt_LstCompsElec=@snt_LstCompsElec,snt_NroTrab=@snt_NroTrab,snt_LstRprsLegs=@snt_LstRprsLegs,snt_ActComExt=@snt_ActComExt,Snt_FecInsPLE=@Snt_FecInsPLE, Telf_Busc = @TelfBusc
+				snt_LstCompsElec=@snt_LstCompsElec,snt_NroTrab=@snt_NroTrab,snt_LstRprsLegs=@snt_LstRprsLegs,snt_ActComExt=@snt_ActComExt,Snt_FecInsPLE=@Snt_FecInsPLE, Telf_Busc = @TelfBusc, Snt_NroPresSrv = @snt_NroPresSrv
 	where RucE=@RucE and Cd_Clt=@Cd_Clt
 	if @@rowcount <= 0
 	begin	   set @msj = 'Cliente no pudo ser modificado'
