@@ -64,7 +64,8 @@ CREATE TABLE [dbo].[Cliente2]
 [Snt_NroTrab] [int] NULL,
 [Snt_NroPresSrv] [int] NULL,
 [Snt_LstRprsLegs] [varchar] (2000) COLLATE Modern_Spanish_CI_AS NULL,
-[Telf_Busc] [varchar] (2000) COLLATE Modern_Spanish_CI_AS NULL
+[Telf_Busc] [varchar] (2000) COLLATE Modern_Spanish_CI_AS NULL,
+[Color] [varchar] (50) COLLATE Modern_Spanish_CI_AS NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[Cliente2] ADD CONSTRAINT [PK_Cliente2] PRIMARY KEY CLUSTERED  ([RucE], [Cd_Clt]) ON [PRIMARY]
