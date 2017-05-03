@@ -93,7 +93,8 @@ CREATE TABLE [dbo].[Venta]
 [DE_FirmaDgt] [varchar] (1000) COLLATE Modern_Spanish_CI_AS NULL,
 [DE_XML] [xml] NULL,
 [DE_CDR] [varbinary] (max) NULL,
-[MtvoBaja] [varchar] (200) COLLATE Modern_Spanish_CI_AS NULL
+[MtvoBaja] [varchar] (200) COLLATE Modern_Spanish_CI_AS NULL,
+[DE_PDF] [varbinary] (max) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[Venta] ADD CONSTRAINT [PK_Venta] PRIMARY KEY CLUSTERED  ([RucE], [Cd_Vta]) ON [PRIMARY]

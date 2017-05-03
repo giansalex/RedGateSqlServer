@@ -40,7 +40,7 @@ set language Spanish
 	--Condicion	
 	if(@FecD = '' or @FecD is null)
 	begin
-		set @Cond = '(v.RucE='''+@RucE+''')  and v.Cd_Vta > ''' + Convert(nvarchar,isnull(@Ult_CdVta,'')) +''' and Cd_Cte_NO is null '
+		set @Cond = '(v.RucE='''+@RucE+''') and v.Cd_Vta > ''' + Convert(nvarchar,isnull(@Ult_CdVta,'')) +''' and Cd_Cte_NO is null '
 	end
 	else
 	begin
@@ -132,53 +132,81 @@ set language Spanish
 	--else if(@Colum = 'Cd_MIS') set @Cond=@Cond +' and v.Cd_MIS like '''+@Dato+''''
 	--else if(@Colum = 'MtvoIngSal') set @Cond=@Cond +' and mis.Descrip like '''+@Dato+''''	
 
-declare @Consulta varchar(8000)
-set @Consulta='		select top '+convert(varchar,@TamPag)+'
+	declare @Consulta varchar(8000)
+	set @Consulta='	select top '+convert(varchar,@TamPag)+'
 				v.Cd_Vta, v.Eje, v.Prdo, v.RegCtb, Convert(nvarchar,v.FecMov,103) as FecMov,v.Cd_MIS, v.Cd_TD, td.Descrip as TipoDoc, v.NroSre,NroDoc, v.Cd_Clt,eeSNT.Descrip as DE_EstEnvSNT,DE_FecEnvSNT,eeClt.Descrip as DE_EstEnvClt,
 				case(isnull(len(v.Cd_Clt),0)) when 0 then '''' else case(isnull(len(c2.RSocial),0)) when 0 then isnull(c2.ApPat,'''')+'' ''+isnull(c2.ApMat,'''')+'', ''+isnull(c2.Nom,'''') else c2.RSocial end end as Cliente,
-				Convert(nvarchar,v.FecED,103) as FecED,Convert(nvarchar,v.FecVD,103) as FecVD, v.Cd_Mda,mo.Nombre as Moneda, v.CamMda, v.Obs, case (IB_Anulado) when 1 then .0 else isnull(v.ValorNeto,.0) end as ValorNeto,
-				case(v.Cd_IAV_DF) when ''E'' then ''Exonerado'' when ''S'' then ''Base Imponible'' when ''I'' then ''Inafecto'' when ''V'' then ''Exportacion'' else '' '' end as Cd_IAV_DF,
+				Convert(nvarchar,v.FecED,103) as FecED,Convert(nvarchar,v.FecVD,103) as FecVD, v.Cd_Mda,mo.Nombre as Moneda, v.CamMda, v.Obs, 
+				case (IB_Anulado) when 1 then .0 else isnull(v.ValorNeto,.0) end as ValorNeto,
+				case (v.Cd_IAV_DF) when ''E'' then ''Exonerado'' when ''S'' then ''Base Imponible'' when ''I'' then ''Inafecto'' when ''V'' then ''Exportacion'' else '' '' end as Cd_IAV_DF,
 				case (IB_Anulado) when 1 then .0 else isnull(v.BaseSinDsctoF,0.00) end as BaseSinDsctoF,
-				case (IB_Anulado) when 1 then .0 else isnull(v.DsctoFnz_P,.0) end as DsctoFnz_P, case (IB_Anulado) when 1 then .0 else isnull(v.DsctoFnz_I,.0) end as DsctoFnz_I,
-				case (IB_Anulado) when 1 then .0 else isnull(v.INF_Neto,.0) end as INF_Neto, case (IB_Anulado) when 1 then .0 else isnull(v.EXO_Neto,.0) end as EXO_Neto,
-				case (IB_Anulado) when 1 then .0 else isnull(v.EXPO_Neto,.0) end as EXPO_Neto, case (IB_Anulado) when 1 then .0 else isnull(v.BIM_Neto,.0) end as BIM_Neto,				
-				case(v.IGV) when 0 then 0 else 1 end as IncIGV, case (IB_Anulado) when 1 then .0 else isnull(v.IGV,.0) end as IGV,
-				case (IB_Anulado) when 1 then .0 else isnull(v.Total,.0) end as Total, case (IB_Anulado) when 1 then .0 else isnull(v.Percep,.0) end as Percep,
-				v.Cd_FPC, fp.Nombre as FormaPago, Convert(nvarchar,v.FecCbr,103) as FecCbr, case v.IB_Cbdo when 1 then 1 else 0 end as IB_Cbdo, 
+				case (IB_Anulado) when 1 then .0 else isnull(v.DsctoFnz_P,.0) end as DsctoFnz_P, 
+				case (IB_Anulado) when 1 then .0 else isnull(v.DsctoFnz_I,.0) end as DsctoFnz_I,
+				case (IB_Anulado) when 1 then .0 else isnull(v.INF_Neto,.0) end as INF_Neto, 
+				case (IB_Anulado) when 1 then .0 else isnull(v.EXO_Neto,.0) end as EXO_Neto,
+				case (IB_Anulado) when 1 then .0 else isnull(v.EXPO_Neto,.0) end as EXPO_Neto, 
+				case (IB_Anulado) when 1 then .0 else isnull(v.BIM_Neto,.0) end as BIM_Neto,				
+				case (v.IGV) when 0 then 0 else 1 end as IncIGV, 
+				case (IB_Anulado) when 1 then .0 else isnull(v.IGV,.0) end as IGV,
+				case (IB_Anulado) when 1 then .0 else isnull(v.Total,.0) end as Total, 
+				case (IB_Anulado) when 1 then .0 else isnull(v.Percep,.0) end as Percep,
+				v.Cd_FPC, fp.Nombre as FormaPago, Convert(nvarchar,v.FecCbr,103) as FecCbr, 
+				case v.IB_Cbdo when 1 then 1 else 0 end as IB_Cbdo, 
 				v.Cd_Vdr, case(isnull(len(v2.RSocial),0)) when 0 then isnull(v2.ApPat,'''')+'' ''+isnull(v2.ApMat,'''')+'' ''+isnull(v2.Nom,'''') else v2.RSocial end as Vendedor,
 				v.Cd_Area, ar.Descrip as Area,
 				--c.Cd_CC + '' - '' + c.Descrip as Cd_CC, s.Cd_SC + '' - '' + s.Descrip as Cd_SC, ss.Cd_SS + '' - '' + ss.Descrip as Cd_SS, 
 				c.Cd_CC, c.Descrip as nomCC,
 				s.Cd_SC, s.Descrip as nomSC,
 				ss.Cd_SS, ss.Descrip as nomSS,								
-				v.DR_CdVta, Convert(nvarchar,v.DR_FecED,103) as DR_FecED, v.DR_CdTD, v.DR_NSre, v.DR_NDoc, v.Cd_OP,Convert(nvarchar,v.FecReg,103) as FecReg,
-				v.UsuCrea, Convert(nvarchar,v.FecMdf,103) as FecMdf, v.UsuModf,	case (IB_Anulado) when 1 then .0 else isnull(v.Valor,.0) end as Valor,
-				case (IB_Anulado) when 1 then .0 else isnull(v.TotDsctoP,.0) end as TotDsctoP, case (IB_Anulado) when 1 then .0 else isnull(v.TotDsctoI,.0) end as TotDsctoI,
+				v.DR_CdVta, Convert(nvarchar,v.DR_FecED,103) as DR_FecED, v.DR_CdTD, v.DR_NSre, v.DR_NDoc, 
+				v.Cd_OP,Convert(nvarchar,v.FecReg,103) as FecReg,
+				v.UsuCrea, Convert(nvarchar,v.FecMdf,103) as FecMdf, v.UsuModf,	
+				case (IB_Anulado) when 1 then .0 else isnull(v.Valor,.0) end as Valor,
+				case (IB_Anulado) when 1 then .0 else isnull(v.TotDsctoP,.0) end as TotDsctoP, 
+				case (IB_Anulado) when 1 then .0 else isnull(v.TotDsctoI,.0) end as TotDsctoI,
 				Case When (Select Count(d.Id_Doc) from DocsVta d Where d.RucE=v.RucE and d.Cd_Vta=v.Cd_Vta)>0 Then 1 Else 0 End DocAdd,
 				case v.IB_Anulado when 1 then convert(bit,1) else convert(bit,0) end as IB_Anulado,
-				v.CA01, v.CA02, v.CA03, v.CA04, v.CA05, v.CA06, v.CA07, v.CA08, v.CA09, v.CA10, v.CA11, v.CA12, v.CA13, v.CA14, v.CA15,
-				v.CA16,v.CA17,v.CA18,v.CA19,v.CA20,v.CA21,v.CA22,v.CA23,v.CA24,v.CA25,isnull(dbo.CostVerificar(v.RucE,v.Cd_Vta),0) as Costo
+				v.CA01, v.CA02, v.CA03, v.CA04, v.CA05, v.CA06, v.CA07, v.CA08, v.CA09, v.CA10, 
+				v.CA11, v.CA12, v.CA13, v.CA14, v.CA15,	v.CA16, v.CA17, v.CA18, v.CA19, v.CA20, v.CA21, v.CA22, v.CA23, v.CA24, v.CA25, 
+				isnull(dbo.CostVerificar(v.RucE,v.Cd_Vta),0) as Costo
 				from
 				' +@Inter+' where 
 				'+@Cond + ' order by v.Cd_Vta '
-print @Consulta
+
+/*Pruebas:
+	set @Consulta = 'INICIO: ' + @Consulta 
+	print 'tamaño consulta:' print len(@Consulta)
+*/
+	print @Consulta
+
 	if not exists (select top 1 * from Venta where RucE=@RucE) --and Cd_Clt = @Cd_Clt)
 		set @msj = 'No se encontraron Ventas registradas'
 	else
-	  begin
+	begin
 		Exec (@Consulta)
-		if(@Ult_CdVta is null) -- si es primera pagina y primera busqueda
-		  begin
-		    set @sql = 'select @Regs = count(*) from ' +@Inter+ ' where '+@Cond
-		    exec sp_executesql @sql, N'@Regs int output',@NroRegs output
-		    set @NroPags = @NroRegs/@TamPag + case when @NroRegs%@TamPag=0 then 0 else 1 end
-		  end
-		  set @sql = 'select @RMax = max(Cd_Vta) from(select top '+ Convert(nvarchar,@TamPag)+' Cd_Vta  from ' + @Inter + ' where ' + @Cond +' order by Cd_Vta) as  Venta'
-		  exec sp_executesql @sql, N'@RMax char(10) output',@Max output
 
-		  set @sql = 'select top 1 @RMin = Cd_Vta from ' + @Inter + ' where ' +@Cond+' order by Cd_Vta'
-		  exec sp_executesql @sql, N'@RMin char(10) output', @Min output
+		if(@Ult_CdVta is null) -- si es primera pagina y primera busqueda
+		begin
+			set @sql = 'select @Regs = count(*) from ' +@Inter+ ' where '+@Cond
+			exec sp_executesql @sql, N'@Regs int output',@NroRegs output
+			set @NroPags = @NroRegs/@TamPag + case when @NroRegs%@TamPag=0 then 0 else 1 end
+		end
+
+		set @sql = 'select @RMax = max(Cd_Vta) from(select top '+ Convert(nvarchar,@TamPag)+' Cd_Vta  from ' + @Inter + ' where ' + @Cond +' order by Cd_Vta) as  Venta'
+		exec sp_executesql @sql, N'@RMax char(10) output',@Max output
+
+		set @sql = 'select top 1 @RMin = Cd_Vta from ' + @Inter + ' where ' +@Cond+' order by Cd_Vta'
+		exec sp_executesql @sql, N'@RMin char(10) output', @Min output
 	end
+
+/*	Pruebas:
+print ''
+print 'Variables OutPut:'
+print '@NroRegs: ' + convert(varchar,@NroRegs)
+print '@NroPags: ' + convert(varchar,@NroPags)
+print '@Max: ' + @Max
+print '@Min: ' + @Min
+*/
 
 -- Leyenda --
 -- CAM : 06/02/2012 	: <Creacion del procedimiento almacenado>
@@ -189,4 +217,9 @@ set language spanish
 exec Vta_VentaCons_explo_PagSig4 '11111111111','01/08/2012','14/08/2012',null,null,500,null,null,null,null,null,null
 
 */
+
+--exec Vta_VentaCons_explo_PagSig5 '20160000001','01/01/2017','01/05/2017',null,null,20,null,null,null,null,null,null
+--exec Vta_VentaCons_explo_PagSig5 '20160000001','01/01/2017','01/05/2017',null,null,20,'VT00000036',null,null,null,null,null
+
+
 GO
