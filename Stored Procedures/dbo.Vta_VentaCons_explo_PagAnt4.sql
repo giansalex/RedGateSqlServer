@@ -132,7 +132,7 @@ set language Spanish
 
 	declare @Consulta varchar(8000)
 		set @Consulta='	select *from(	select top '+convert(nvarchar,@TamPag)+'
-				v.Cd_Vta, v.Eje, v.Prdo, v.RegCtb, Convert(nvarchar,v.FecMov,103) as FecMov,v.Cd_MIS, v.Cd_TD, td.Descrip as TipoDoc, v.NroSre,NroDoc, v.Cd_Clt,v.Cd_Clt,eeSNT.Descrip as DE_EstEnvSNT,DE_FecEnvSNT,eeClt.Descrip as DE_EstEnvClt,
+				v.Cd_Vta, v.Eje, v.Prdo, v.RegCtb, Convert(nvarchar,v.FecMov,103) as FecMov,v.Cd_MIS, v.Cd_TD, td.Descrip as TipoDoc, v.NroSre,NroDoc, v.Cd_Clt,eeSNT.Descrip as DE_EstEnvSNT,DE_FecEnvSNT,eeClt.Descrip as DE_EstEnvClt,
 				case(isnull(len(v.Cd_Clt),0)) when 0 then '''' else case(isnull(len(c2.RSocial),0)) when 0 then isnull(c2.ApPat,'''')+'' ''+isnull(c2.ApMat,'''')+'', ''+isnull(c2.Nom,'''') else c2.RSocial end end as Cliente,
 				Convert(nvarchar,v.FecED,103) as FecED,Convert(nvarchar,v.FecVD,103) as FecVD,
 				v.Cd_Mda,mo.Nombre as Moneda, v.CamMda, v.Obs,  
@@ -159,10 +159,9 @@ set language Spanish
 				Case When (Select Count(d.Id_Doc) from DocsVta d Where d.RucE=v.RucE and d.Cd_Vta=v.Cd_Vta)>0 Then 1 Else 0 End DocAdd,
 				case v.IB_Anulado when 1 then convert(bit,1) else convert(bit,0) end as IB_Anulado,v.CA01,v.CA02,v.CA03,v.CA04,v.CA05,v.CA06,v.CA07,v.CA08,v.CA09,v.CA10,
 				v.CA11,v.CA12,v.CA13,v.CA14,v.CA15,v.CA16,v.CA17,v.CA18,v.CA19,v.CA20,v.CA21,v.CA22,v.CA23,v.CA24,v.CA25, isnull(dbo.CostVerificar(v.RucE,v.Cd_Vta),0) as Costo
-				from
-				' +@Inter+' where 
-				'+@Cond + ' order by v.Cd_Vta desc) as Venta order by Cd_Vta '
+				from '
 
+		SET @Consulta = @Consulta +@Inter+' where '+@Cond + ' order by v.Cd_Vta desc) as Venta order by Cd_Vta '
 				print @Consulta
 	if not exists (select top 1 * from Venta where RucE=@RucE)
 		set @msj = 'No se encontraron Ventas registradas'

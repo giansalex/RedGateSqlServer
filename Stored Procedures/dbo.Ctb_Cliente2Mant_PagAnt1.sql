@@ -99,8 +99,7 @@ as
 print @Consulta
 	Exec (@Consulta)
 
-	set @sql = 'select t
-	op 1 @RMax = Cd_Clt from '+@Inter+' where '+@Cond+'order by Cd_Clt DESC'
+	set @sql = 'select top 1 @RMax = Cd_Clt from '+@Inter+' where '+@Cond+'order by Cd_Clt DESC'
 	exec sp_executesql @sql, N'@RMax char(10) output', @Max output
 	set @sql = 'select @RMin = min(Cd_Clt) from (select top ' + convert(nvarchar,@TamPag)+' Cd_Clt from ' + @Inter+'
 		where '+@Cond+'
