@@ -23,6 +23,7 @@ SELECT RucE
       ,DE_IB_GuardarArchs
       ,DE_RutaArchs
       ,DE_NroResol_SNT
+	  ,DE_CdWS
   FROM CfgVenta
  where RucE = @RucE
 

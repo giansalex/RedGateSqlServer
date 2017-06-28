@@ -47,7 +47,8 @@ CREATE TABLE [dbo].[VentaDet]
 [PrecioUnitSD] [numeric] (18, 7) NULL,
 [PercepPorc] [numeric] (8, 7) NULL,
 [PercepImporte] [numeric] (16, 7) NULL,
-[TotalNeto] [numeric] (18, 7) NULL
+[TotalNeto] [numeric] (18, 7) NULL,
+[Cd_TipAfec] [char] (2) COLLATE Modern_Spanish_CI_AS NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[VentaDet] ADD CONSTRAINT [PK_VentaDet] PRIMARY KEY CLUSTERED  ([RucE], [Cd_Vta], [Nro_RegVdt]) ON [PRIMARY]
@@ -87,6 +88,8 @@ GO
 EXEC sp_addextendedproperty N'MS_Description', N'SRV0001', 'SCHEMA', N'dbo', 'TABLE', N'VentaDet', 'COLUMN', N'Cd_Srv'
 GO
 EXEC sp_addextendedproperty N'MS_Description', N'Sub Sub C. Costo', 'SCHEMA', N'dbo', 'TABLE', N'VentaDet', 'COLUMN', N'Cd_SS'
+GO
+EXEC sp_addextendedproperty N'MS_Description', N'Codigo Indicador Afecto Venta', 'SCHEMA', N'dbo', 'TABLE', N'VentaDet', 'COLUMN', N'Cd_TipAfec'
 GO
 EXEC sp_addextendedproperty N'MS_Description', N'YA NO SE USA', 'SCHEMA', N'dbo', 'TABLE', N'VentaDet', 'COLUMN', N'Cd_UM_NO'
 GO

@@ -7,10 +7,15 @@ CREATE TABLE [dbo].[CfgVenta]
 [DE_IB_EnvSinc] [bit] NULL,
 [DE_IB_GuardarArchs] [bit] NULL,
 [DE_RutaArchs] [varchar] (256) COLLATE Modern_Spanish_CI_AS NULL,
-[DE_NroResol_SNT] [varchar] (50) COLLATE Modern_Spanish_CI_AS NULL
+[DE_NroResol_SNT] [varchar] (50) COLLATE Modern_Spanish_CI_AS NULL,
+[DE_CdWS] [smallint] NULL,
+[DE_RutaCert] [varchar] (256) COLLATE Modern_Spanish_CI_AS NULL,
+[DE_ClaveCert] [varchar] (100) COLLATE Modern_Spanish_CI_AS NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[CfgVenta] ADD CONSTRAINT [PK_CfgVenta] PRIMARY KEY CLUSTERED  ([RucE]) ON [PRIMARY]
+GO
+EXEC sp_addextendedproperty N'MS_Description', N'Documento Electronico: Codigo Web Service', 'SCHEMA', N'dbo', 'TABLE', N'CfgVenta', 'COLUMN', N'DE_CdWS'
 GO
 EXEC sp_addextendedproperty N'MS_Description', N'Doc. Elect.: Envío Sincrono', 'SCHEMA', N'dbo', 'TABLE', N'CfgVenta', 'COLUMN', N'DE_IB_EnvSinc'
 GO

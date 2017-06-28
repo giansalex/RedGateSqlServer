@@ -57,7 +57,8 @@ CREATE TABLE [dbo].[OrdPedido]
 [Cd_SC] [nvarchar] (8) COLLATE Modern_Spanish_CI_AS NULL,
 [Cd_SS] [nvarchar] (8) COLLATE Modern_Spanish_CI_AS NULL,
 [FecVencimiento] [date] NULL,
-[IB_Percepcion] [bit] NULL
+[IB_Percepcion] [bit] NULL,
+[Mesa] [varchar] (50) COLLATE Modern_Spanish_CI_AS NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[OrdPedido] ADD CONSTRAINT [PK_Orden] PRIMARY KEY CLUSTERED  ([RucE], [Cd_OP]) ON [PRIMARY]
